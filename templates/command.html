@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Test</title>
+</head>
+<body>
+
+<h1>System Command Test</h1>
+
+<form method="POST">
+    <input type="text" name="command" placeholder="Enter a command">
+    <button type="submit">Execute</button>
+</form>
+
+{% if result %}
+<h2>Command Output</h2>
+<pre>{{ result }}</pre>
+{% endif %}
+
+<p><a href="/">Back to Home</a></p>
+
+</body>
+</html>
