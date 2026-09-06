@@ -8,6 +8,7 @@
 <h1>User Search</h1>
 
 <form method="GET">
+    <!-- User input is escaped by Jinja to prevent reflected XSS -->
     <input type="text" name="q" value="{{ query }}" placeholder="Search username">
     <button type="submit">Search</button>
 </form>
