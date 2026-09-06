@@ -102,10 +102,10 @@ def search():
         conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
 
-        sql = f"SELECT id, username, email FROM users WHERE username LIKE '%{query}%'"
+        sql = "SELECT id, username, email FROM users WHERE username LIKE ?"
 
         try:
-            cursor.execute(sql)
+            cursor.execute(sql, ('%' + query + '%',))
             results = cursor.fetchall()
         except Exception as e:
             results = [(0, "Database Error", str(e))]
