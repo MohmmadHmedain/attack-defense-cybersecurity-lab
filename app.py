@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import os
 import subprocess
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -54,14 +55,25 @@ def index():
 def upload():
     message = ""
 
+    allowed_extensions = {"txt", "pdf", "png", "jpg", "jpeg"}
+
     if request.method == "POST":
         uploaded_file = request.files.get("file")
 
         if uploaded_file and uploaded_file.filename:
-            filepath = os.path.join(UPLOAD_FOLDER, uploaded_file.filename)
-            uploaded_file.save(filepath)
+            filename = secure_filename(uploaded_file.filename)
 
-            message = f"File uploaded successfully: {uploaded_file.filename}"
+            if "." not in filename:
+                message = "File type not allowed"
+            else:
+                extension = filename.rsplit(".", 1)[1].lower()
+
+                if extension not in allowed_extensions:
+                    message = "File type not allowed"
+                else:
+                    filepath = os.path.join(UPLOAD_FOLDER, filename)
+                    uploaded_file.save(filepath)
+                    message = f"File uploaded successfully: {filename}"
 
     return render_template("upload.html", message=message)
 
