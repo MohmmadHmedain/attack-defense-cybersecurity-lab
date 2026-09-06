@@ -76,13 +76,22 @@ def command():
     if request.method == "POST":
         command_input = request.form.get("command", "")
 
+        allowed_commands = {
+            "id": ["id"],
+            "whoami": ["whoami"],
+            "pwd": ["pwd"]
+        }
+
         try:
-            result = subprocess.check_output(
-                command_input,
-                shell=True,
-                stderr=subprocess.STDOUT,
-                text=True
-            )
+            if command_input not in allowed_commands:
+                result = "Command not allowed"
+            else:
+                result = subprocess.check_output(
+                    allowed_commands[command_input],
+                    shell=False,
+                    stderr=subprocess.STDOUT,
+                    text=True
+                )
         except Exception as e:
             result = str(e)
 
